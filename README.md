@@ -1,42 +1,37 @@
-i# Hotel Management System (Java + JDBC)
+# Hotel Management System (Java + JDBC)
 
-A CLI-based hotel management system built with Java 17, JDBC, and MySQL. It supports operations for rooms, guests, bookings, billing, and more.
+A CLI-based hotel management system built with Java 17, JDBC, and SQLite. It supports operations for rooms, guests, bookings, billing, and more.
 
 ## Features
 - Create/list rooms and guests
 - Create/list bookings with date overlap checks
 - Billing system (services, invoices, payments)
-- MySQL database with auto-initialized schema
+- SQLite database with auto-initialized schema
 
 ## Tech
 - Java 17
 - Maven
-- JDBC with MySQL Connector/J
+- JDBC with SQLite JDBC Driver
 
 ## Getting Started
 
 ### Prerequisites
-- MySQL Server 8.0+ installed and running
 - Java 17+
 - Maven
 
-### Setup MySQL
-**See [MYSQL_SETUP.md](MYSQL_SETUP.md) for detailed MySQL installation and configuration instructions.**
+### Setup SQLite
+**No installation required!** SQLite is embedded - the database file will be created automatically.
 
-Quick setup:
-1. Install MySQL and start the service
-2. Create database: `CREATE DATABASE hotel_db;`
-3. Create user (or use root): `CREATE USER 'hotel_user'@'localhost' IDENTIFIED BY 'password';`
-4. Grant privileges: `GRANT ALL ON hotel_db.* TO 'hotel_user'@'localhost';`
+The database file (`hotel.db`) will be created in the project root directory when you first run the application.
 
 ### Configure Application
-Edit `src/main/resources/application.properties`:
+Edit `src/main/resources/application.properties` (default configuration works out of the box):
 ```properties
-db.url=jdbc:mysql://localhost:3306/hotel_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-db.username=hotel_user
-db.password=your_password_here
+db.url=jdbc:sqlite:hotel.db
 db.initSchema=true
 ```
+
+**Note**: SQLite doesn't require username/password. The database file is stored locally.
 
 ### Build and Run
 ```bash
@@ -48,6 +43,24 @@ java -cp 'target/hotel-management-1.0.0.jar:target/lib/*' com.hotel.App
 ```
 
 The application will automatically create all tables on first run.
+
+### Load Sample Data (Optional)
+
+To populate the database with sample data for testing:
+
+```bash
+# Load sample data (keeps existing data)
+java -cp 'target/hotel-management-1.0.0.jar:target/lib/*' com.hotel.util.SampleDataLoader
+
+# Clear existing data and load sample data
+java -cp 'target/hotel-management-1.0.0.jar:target/lib/*' com.hotel.util.SampleDataLoader --clear
+```
+
+See [LOAD_SAMPLE_DATA.md](LOAD_SAMPLE_DATA.md) for details. The sample data includes:
+- 20 rooms, 30 guests, 25 bookings
+- 15 services, 20 invoices, 30 payments
+- 12 employees, 25 room tasks
+- **Total: 232 sample records**
 
 ## Project Structure
 - `src/main/java/com/hotel/App.java` – CLI entrypoint
@@ -176,7 +189,8 @@ erDiagram
 - Removed advanced billing (taxes/discounts/rate plans) and auth to simplify.
 
 ## Notes
-- The application is configured for MySQL. See `MYSQL_SETUP.md` for setup instructions.
+- The application is configured for SQLite. See [SQLITE_SETUP.md](SQLITE_SETUP.md) for setup instructions.
 - Database schema is automatically created on first run if `db.initSchema=true`.
-- All monetary values use `DECIMAL(10,2)` for precision.
+- The database file (`hotel.db`) is created in the project root directory.
+- All monetary values use `REAL` type in SQLite for floating-point precision.
 

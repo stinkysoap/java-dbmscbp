@@ -114,3 +114,8 @@ CREATE INDEX IF NOT EXISTS idx_room_tasks_room ON room_tasks(room_id);
 CREATE INDEX IF NOT EXISTS idx_booking_services_booking ON booking_services(booking_id);
 CREATE INDEX IF NOT EXISTS idx_invoices_booking ON invoices(booking_id);
 CREATE INDEX IF NOT EXISTS idx_payments_invoice ON payments(invoice_id);
+
+-- Enable foreign key constraints for SQLite
+-- Note: This is also enabled in ConnectionManager.getConnection() for programmatic access
+-- Included here for manual SQL execution via sqlite3 command line
+PRAGMA foreign_keys = ON;

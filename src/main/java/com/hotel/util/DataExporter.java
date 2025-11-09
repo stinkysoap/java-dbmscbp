@@ -1,8 +1,6 @@
 package com.hotel.util;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DataExporter {
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();

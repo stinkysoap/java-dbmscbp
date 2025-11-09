@@ -32,7 +32,12 @@ public class ConnectionManager {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(config.getUrl());
+        Connection connection = DriverManager.getConnection(config.getUrl());
+        // Enable foreign key constraints for SQLite
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON");
+        }
+        return connection;
     }
 
     private void initSchema() {
